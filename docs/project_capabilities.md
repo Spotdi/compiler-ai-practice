@@ -3,6 +3,34 @@
 This document summarizes the practical capabilities implemented in this
 repository.
 
+## Toy Compiler
+
+The `toy-compiler/` module implements a compact compiler pipeline for a small
+expression language.
+
+Implemented stages:
+
+- lexical analysis
+- recursive-descent parsing
+- AST construction
+- semantic checks for declaration-before-use
+- three-address IR generation
+- constant folding
+- simple dead code elimination
+
+Supported language features:
+
+- `let` declarations
+- assignments
+- `print(...)`
+- integer literals
+- variables
+- `+`, `-`, `*`, `/`
+- parentheses and operator precedence
+
+This module provides a concrete implementation of frontend and middle-end
+compiler concepts.
+
 ## LLVM IR Examples
 
 The LLVM IR examples are designed to make high-level control-flow constructs
@@ -78,4 +106,3 @@ Potential extensions:
 - export optimized ONNX models
 - benchmark inference with ONNX Runtime
 - support larger model summaries
-

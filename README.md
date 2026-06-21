@@ -1,7 +1,8 @@
 # Compiler AI Practice
 
-A compact compiler and AI graph analysis project focused on LLVM IR,
-optimization principles, and practical ONNX model inspection.
+A compact compiler and AI graph analysis project focused on frontend
+implementation, intermediate representation, optimization principles, LLVM IR,
+and practical ONNX model inspection.
 
 The repository is built around one idea: compiler techniques are useful beyond
 traditional programming languages. The same concepts behind IR, control flow,
@@ -12,6 +13,8 @@ optimization.
 
 - Handwritten LLVM IR examples for arithmetic, branches, loops, and function
   calls.
+- A small toy compiler with lexer, parser, AST, semantic checks, IR generation,
+  constant folding, and simple dead code elimination.
 - Clear notes for constant folding, dead code elimination, and common
   subexpression elimination.
 - A practical ONNX graph inspector that reports operators, parameters, tensor
@@ -23,6 +26,17 @@ optimization.
 ```text
 .
 ├── README.md
+├── toy-compiler/
+│   ├── ast_nodes.py
+│   ├── lexer.py
+│   ├── parser.py
+│   ├── ir.py
+│   ├── ir_generator.py
+│   ├── optimizer.py
+│   ├── toycc.py
+│   ├── examples/
+│   │   └── demo.toy
+│   └── README.md
 ├── llvm-ir-practice/
 │   ├── 01_arithmetic.ll
 │   ├── 02_if_else.ll
@@ -45,7 +59,41 @@ optimization.
 
 ## What This Project Can Do
 
-### 1. Inspect AI Model Graphs
+### 1. Compile a Small Toy Language
+
+`toy-compiler/` implements a small compiler pipeline:
+
+```text
+source -> tokens -> AST -> three-address IR -> optimized IR
+```
+
+It supports declarations, assignments, `print`, integer expressions, operator
+precedence, semantic checks, constant folding, and simple dead code
+elimination.
+
+Example:
+
+```bash
+cd toy-compiler
+python3 toycc.py examples/demo.toy
+```
+
+Input:
+
+```text
+let x = 1 + 2 * 3;
+let y = x + 4;
+let unused = 10 * 20;
+print(y);
+```
+
+Optimized IR:
+
+```text
+print 11
+```
+
+### 2. Inspect AI Model Graphs
 
 `onnx-graph-practice/inspect_onnx_graph.py` turns an ONNX file into a readable
 graph analysis report.
@@ -69,7 +117,7 @@ python inspect_onnx_graph.py tiny_model.onnx \
   --dot graph.dot
 ```
 
-### 2. Practice LLVM IR
+### 3. Practice LLVM IR
 
 The `llvm-ir-practice/` directory shows how common high-level constructs are
 represented in LLVM IR:
@@ -94,7 +142,7 @@ clang 01_arithmetic.ll -o arithmetic
 echo $?
 ```
 
-### 3. Explain Optimization Passes
+### 4. Explain Optimization Passes
 
 The `optimization-notes/` directory explains classic compiler optimizations in
 a way that connects directly to IR transformation:
@@ -107,6 +155,14 @@ These notes focus on optimization motivation, before/after examples, pass-level
 logic, and safety conditions.
 
 ## Quick Start
+
+### Run the Toy Compiler
+
+```bash
+cd /path/to/compiler-ai-practice/toy-compiler
+python3 toycc.py examples/demo.toy
+python3 -m unittest discover -s tests
+```
 
 ### Run the ONNX Graph Tool
 
@@ -130,6 +186,25 @@ python inspect_onnx_graph.py tiny_model.onnx \
 ```
 
 ## Example Output
+
+The toy compiler prints raw and optimized IR:
+
+```text
+Raw IR
+------
+t0 = 2 * 3
+t1 = 1 + t0
+x = t1
+t2 = x + 4
+y = t2
+t3 = 10 * 20
+unused = t3
+print y
+
+Optimized IR
+------------
+print 11
+```
 
 The ONNX inspector prints sections like:
 
@@ -169,4 +244,3 @@ runnable examples.
   pipeline notes.
 - [docs/project_capabilities.md](docs/project_capabilities.md): what the
   project implements and what problems it can help solve.
-
