@@ -17,6 +17,9 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
+Newer PyTorch ONNX exporters also require `onnxscript`, which is included in
+`requirements.txt`.
+
 ## Export Tiny Model
 
 ```bash
@@ -56,4 +59,3 @@ Common optimization ideas include:
 - operator fusion, such as MatMul + Add
 - removing unused nodes
 - backend-specific lowering
-

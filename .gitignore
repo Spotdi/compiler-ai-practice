@@ -5,10 +5,10 @@ __pycache__/
 venv/
 env/
 *.onnx
+*.onnx.data
 
 # LLVM/clang local build outputs
 llvm-ir-practice/arithmetic
 llvm-ir-practice/if_else
 llvm-ir-practice/loop
 llvm-ir-practice/function_call
-
