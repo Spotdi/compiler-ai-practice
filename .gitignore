@@ -6,6 +6,8 @@ venv/
 env/
 *.onnx
 *.onnx.data
+onnx-graph-practice/graph.dot
+onnx-graph-practice/graph_report.json
 
 # LLVM/clang local build outputs
 llvm-ir-practice/arithmetic

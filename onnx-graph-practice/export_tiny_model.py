@@ -7,6 +7,7 @@ as Gemm/MatMul/Add and Relu-like nodes in ONNX depending on exporter settings.
 
 from __future__ import annotations
 
+import warnings
 from pathlib import Path
 
 import torch
@@ -28,10 +29,18 @@ class TinyModel(nn.Module):
 
 def main() -> None:
     output_path = Path("tiny_model.onnx")
+    torch.manual_seed(0)
+
     model = TinyModel()
     model.eval()
 
     dummy_input = torch.randn(1, 4)
+
+    warnings.filterwarnings(
+        "ignore",
+        category=DeprecationWarning,
+        message=".*legacy TorchScript-based ONNX export.*",
+    )
 
     torch.onnx.export(
         model,
@@ -44,6 +53,8 @@ def main() -> None:
             "output": {0: "batch_size"},
         },
         opset_version=17,
+        external_data=False,
+        dynamo=False,
     )
 
     print(f"Exported ONNX model to {output_path.resolve()}")
@@ -51,4 +62,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
